@@ -11,13 +11,15 @@
 	<packaging>war</packaging>
 
 	<name>bookshop Maven Webapp</name>
-	<!-- FIXME change it to the project's website -->
+
 	<url>http://www.example.com</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<jstl.version>1.2</jstl.version>
+		<servletapi.version>4.0.1</servletapi.version>
 	</properties>
 
 	<dependencies>
@@ -30,8 +32,15 @@
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${jstl.version}</version>
+		</dependency>
+
+		<!-- compile only, deployed container will provide this -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>4.0.1</version>
+			<version>${servletapi.version}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
