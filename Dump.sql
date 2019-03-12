@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `online_store` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `online_store`;
 -- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
 -- Host: localhost    Database: online_store
 -- ------------------------------------------------------
--- Server version	5.7.16-log
+-- Server version	5.7.17-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -18,13 +16,13 @@ USE `online_store`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `author`
+-- Table structure for table `authors`
 --
 
-DROP TABLE IF EXISTS `author`;
+DROP TABLE IF EXISTS `authors`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `author` (
+CREATE TABLE `authors` (
   `id` int(11) NOT NULL,
   `first_name` varchar(45) NOT NULL,
   `last_name` varchar(45) DEFAULT NULL,
@@ -34,22 +32,13 @@ CREATE TABLE `author` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `author`
+-- Table structure for table `books`
 --
 
-LOCK TABLES `author` WRITE;
-/*!40000 ALTER TABLE `author` DISABLE KEYS */;
-/*!40000 ALTER TABLE `author` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `book`
---
-
-DROP TABLE IF EXISTS `book`;
+DROP TABLE IF EXISTS `books`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `book` (
+CREATE TABLE `books` (
   `id` int(11) NOT NULL,
   `title` varchar(45) NOT NULL,
   `year` int(11) NOT NULL,
@@ -61,102 +50,66 @@ CREATE TABLE `book` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `book`
+-- Table structure for table `books_authors`
 --
 
-LOCK TABLES `book` WRITE;
-/*!40000 ALTER TABLE `book` DISABLE KEYS */;
-/*!40000 ALTER TABLE `book` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `book_author`
---
-
-DROP TABLE IF EXISTS `book_author`;
+DROP TABLE IF EXISTS `books_authors`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `book_author` (
+CREATE TABLE `books_authors` (
   `id_book` int(11) NOT NULL,
   `id_author` int(11) NOT NULL,
   PRIMARY KEY (`id_book`,`id_author`),
   KEY `FK_book_author_authors_idx` (`id_author`),
-  CONSTRAINT `FK_book_author_authors` FOREIGN KEY (`id_author`) REFERENCES `author` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_book_author_books` FOREIGN KEY (`id_book`) REFERENCES `book` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FK_book_author_authors` FOREIGN KEY (`id_author`) REFERENCES `authors` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_book_author_books` FOREIGN KEY (`id_book`) REFERENCES `books` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `book_author`
+-- Table structure for table `books_categories`
 --
 
-LOCK TABLES `book_author` WRITE;
-/*!40000 ALTER TABLE `book_author` DISABLE KEYS */;
-/*!40000 ALTER TABLE `book_author` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `book_category`
---
-
-DROP TABLE IF EXISTS `book_category`;
+DROP TABLE IF EXISTS `books_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `book_category` (
+CREATE TABLE `books_categories` (
   `id_book` int(11) NOT NULL,
   `id_category` int(11) NOT NULL,
   PRIMARY KEY (`id_book`,`id_category`),
   KEY `FK_category_idx` (`id_category`),
   KEY `FK_book_idx` (`id_book`),
-  CONSTRAINT `FK_book_category_books` FOREIGN KEY (`id_book`) REFERENCES `book` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_book_category_categories` FOREIGN KEY (`id_category`) REFERENCES `category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FK_book_category_books` FOREIGN KEY (`id_book`) REFERENCES `books` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_book_category_categories` FOREIGN KEY (`id_category`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `book_category`
+-- Table structure for table `books_orders`
 --
 
-LOCK TABLES `book_category` WRITE;
-/*!40000 ALTER TABLE `book_category` DISABLE KEYS */;
-/*!40000 ALTER TABLE `book_category` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `book_order`
---
-
-DROP TABLE IF EXISTS `book_order`;
+DROP TABLE IF EXISTS `books_orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `book_order` (
+CREATE TABLE `books_orders` (
   `id_book` int(11) NOT NULL,
   `id_order` int(11) NOT NULL,
   `book_amount` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id_book`,`id_order`),
   KEY `FK_book_order_orders_idx` (`id_order`),
-  CONSTRAINT `FK_book_order_books` FOREIGN KEY (`id_book`) REFERENCES `book` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_book_order_orders` FOREIGN KEY (`id_order`) REFERENCES `order` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FK_book_order_books` FOREIGN KEY (`id_book`) REFERENCES `books` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_book_order_orders` FOREIGN KEY (`id_order`) REFERENCES `orders` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `book_order`
+-- Table structure for table `categories`
 --
 
-LOCK TABLES `book_order` WRITE;
-/*!40000 ALTER TABLE `book_order` DISABLE KEYS */;
-/*!40000 ALTER TABLE `book_order` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `category`
---
-
-DROP TABLE IF EXISTS `category`;
+DROP TABLE IF EXISTS `categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `category` (
+CREATE TABLE `categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `description` longtext,
@@ -165,22 +118,13 @@ CREATE TABLE `category` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `category`
+-- Table structure for table `clients`
 --
 
-LOCK TABLES `category` WRITE;
-/*!40000 ALTER TABLE `category` DISABLE KEYS */;
-/*!40000 ALTER TABLE `category` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `client`
---
-
-DROP TABLE IF EXISTS `client`;
+DROP TABLE IF EXISTS `clients`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `client` (
+CREATE TABLE `clients` (
   `id` int(11) NOT NULL,
   `first_name` varchar(45) NOT NULL,
   `last_name` varchar(45) NOT NULL,
@@ -192,22 +136,13 @@ CREATE TABLE `client` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `client`
+-- Table structure for table `orders`
 --
 
-LOCK TABLES `client` WRITE;
-/*!40000 ALTER TABLE `client` DISABLE KEYS */;
-/*!40000 ALTER TABLE `client` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `order`
---
-
-DROP TABLE IF EXISTS `order`;
+DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `order` (
+CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `date_ordered` date NOT NULL,
   `id_client` int(11) NOT NULL,
@@ -216,26 +151,9 @@ CREATE TABLE `order` (
   `date_delivered` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_order_client_idx` (`id_client`),
-  CONSTRAINT `FK_order_client` FOREIGN KEY (`id_client`) REFERENCES `client` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FK_order_client` FOREIGN KEY (`id_client`) REFERENCES `clients` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `order`
---
-
-LOCK TABLES `order` WRITE;
-/*!40000 ALTER TABLE `order` DISABLE KEYS */;
-/*!40000 ALTER TABLE `order` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping events for database 'online_store'
---
-
---
--- Dumping routines for database 'online_store'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -245,3 +163,5 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2019-03-12 17:17:39
